@@ -1,0 +1,24 @@
+---
+- hosts: devsrv
+  become: yes
+  become_user: root
+  become_method: sudo
+  gather_facts: no
+  tasks:
+    - name: Give SSH access
+      authorized_key:
+        user: "{{ username }}"
+        state: present
+        key: "ssh-rsa AAAAB3NzaC1yc2EAAAADAQFFGGHDDHDnwWIzRlgFgskyET601/GuT+hqpSQRgrtbVjbUX+0zg6k8TXV0k5NaBctZUzmXkOsZpdm38B6IDMp8auhVXmQmexws3lbLZMtfV4Z9jyIMVWNIef1l91u4kcP8ig3NOOIYfFX5WmlQlU0cDGqh+VRtXsl7Gm2vF8QvMgj3H7V+VmDfaYwocWv8xVT8URcEFTUK9aHgrMdokvwEnapf1ucivy4MsOodGgv+jB9JPYiJtYKjaQrozfKZ+K6Ohltpe2XJqmxEcwFZX/X0i8QMNgslVrTgRDJc4YY/q/zYmsB0bt1M3+gpzaHA4gw/sIebcDWSSVo2uCSEp7oYFWe7Upl support@ubans"
+      tags:
+        - grant
+      when: action == "grant"
+
+    - name: Removing SSH Access
+      authorized_key:
+        user: "{{ username }}"
+        state: absent
+        key: "ssh-rsa AAAAB3NzaC1yc2EAAAADAQFFGGHDDHDnwWIzRlgFgskyET601/GuT+hqpSQRgrtbVjbUX+0zg6k8TXV0k5NaBctZUzmXkOsZpdm38B6IDMp8auhVXmQmexws3lbLZMtfV4Z9jyIMVWNIef1l91u4kcP8ig3NOOIYfFX5WmlQlU0cDGqh+VRtXsl7Gm2vF8QvMgj3H7V+VmDfaYwocWv8xVT8URcEFTUK9aHgrMdokvwEnapf1ucivy4MsOodGgv+jB9JPYiJtYKjaQrozfKZ+K6Ohltpe2XJqmxEcwFZX/X0i8QMNgslVrTgRDJc4YY/q/zYmsB0bt1M3+gpzaHA4gw/sIebcDWSSVo2uCSEp7oYFWe7Upl support@ubans"
+      tags:
+        - revoke
+      when: action == "revoke"
